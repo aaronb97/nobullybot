@@ -1,11 +1,10 @@
 //import { Message, MessageReaction } from "discord.js";
+require("dotenv").config();
 
 const Discord = require("discord.js");
 const client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION"],
 });
-
-const config = require("./config.json");
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -96,4 +95,5 @@ client.on("messageReactionAdd", async (reaction, user) => {
   }
 });
 
-client.login(config.token);
+console.log(process.env);
+client.login(process.env.TOKEN);
