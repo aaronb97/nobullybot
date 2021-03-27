@@ -67,12 +67,11 @@ client.on("messageReactionAdd", async (reaction, user) => {
     reaction.message.react(reactionEmoji);
   }
 
-  if (
-    reaction.emoji.name === "nobully" &&
-    reaction.count >= 5 &&
-    reaction.message.author !== client.user
-  ) {
-    if (reaction.message.author === client.user) {
+  if (reaction.emoji.name === "nobully" && reaction.count >= 5) {
+    if (
+      reaction.message.author === client.user &&
+      !reaction.message.content.includes("cannot")
+    ) {
       reaction.message.edit(
         `${reaction.message.content}\nYou cannot bully the no bully bot!!!`
       );
