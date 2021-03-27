@@ -95,5 +95,4 @@ client.on("messageReactionAdd", async (reaction, user) => {
   }
 });
 
-console.log(process.env);
 client.login(process.env.TOKEN);
