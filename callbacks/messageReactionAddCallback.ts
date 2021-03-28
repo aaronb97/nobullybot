@@ -1,63 +1,66 @@
 import { Client, MessageReaction } from "discord.js";
+import moment from "moment-timezone";
+
 import * as Messaging from "../messaging";
 
-import dateFormat from "dateformat";
+const timezone = "America/New_York";
+const dateFormat = "dddd, M/D/YYYY, hh:mm A";
 
-export const messageReactionAddGenerator = (client: Client) => {
-  return async (reaction: MessageReaction): Promise<void> => {
-    // When we receive a reaction we check if the reaction is partial or not
-    if (reaction.partial) {
-      // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-      try {
-        await reaction.fetch();
-      } catch (error) {
-        console.error(
-          "Something went wrong when fetching the message: ",
-          error
-        );
-        // Return as `message.author` may be undefined/null
-        return;
-      }
+const messageReactionAddGenerator = (client: Client) => async (
+  reaction: MessageReaction,
+): Promise<void> => {
+  // When we receive a reaction we check if the reaction is partial or not
+  if (reaction.partial) {
+    // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
+    try {
+      await reaction.fetch();
+    } catch (error) {
+      console.error("Something went wrong when fetching the message: ", error);
+      // Return as `message.author` may be undefined/null
+      return;
     }
-    // Now the message has been cached and is fully available
+  }
+  // Now the message has been cached and is fully available
 
-    const { count, emoji, message } = reaction;
+  const { count, emoji, message } = reaction;
 
-    const emojiNames = ["helpful", "wholesome", "wholesomepro"];
-    if (count >= 3 && emojiNames.includes(emoji.name)) {
-      const name = emojiNames.find((x) => x === emoji.name);
-      const reactionEmoji = message.guild.emojis.cache.find(
-        (emoji) => emoji.name === name
-      );
-      message.react(reactionEmoji);
-    }
+  const emojiNames = ["helpful", "wholesome", "wholesomepro"];
+  if (count >= 3 && emojiNames.includes(emoji.name)) {
+    const name = emojiNames.find((x) => x === emoji.name);
+    const reactionEmoji = message.guild.emojis.cache.find(
+      (_emoji) => _emoji.name === name,
+    );
+    message.react(reactionEmoji);
+  }
 
+  if (
+    emoji.name === "nobully" &&
+    count >= parseInt(process.env.EMOJI_COUNT ?? "5")
+  ) {
     if (
-      emoji.name === "nobully" &&
-      count >= parseInt(process.env.EMOJI_COUNT ?? "5")
-    ) {
-      if (
-        message.author === client.user &&
-        !message.content.includes(Messaging.CANNOT_BULLY_THE_BOT)
-      ) {
-        message.edit(`${message.content}\n${Messaging.CANNOT_BULLY_THE_BOT}`);
-      } else {
-        message.delete();
-        message.channel.send(
-          `${message.author.toString()} No bullying!!! Your message from ${dateFormat(
-            message.createdAt,
-            "dddd, mmmm dS, yyyy, h:MM TT"
-          )} has been deleted.`
-        );
-      }
-    }
-
-    if (
-      emoji.name === "redditgold" &&
       message.author === client.user &&
-      !message.content.includes(Messaging.THANKS_FOR_GOLD)
+      !message.content.includes(Messaging.CANNOT_BULLY_THE_BOT)
     ) {
-      message.edit(`${message.content}\n${Messaging.THANKS_FOR_GOLD}`);
+      message.edit(`${message.content}\n${Messaging.CANNOT_BULLY_THE_BOT}`);
+    } else {
+      message.delete();
+      message.channel.send(
+        `${message.author.toString()} No bullying!!! Your message from ${moment(
+          message.createdAt,
+        )
+          .tz(timezone)
+          .format(dateFormat)} has been deleted.`,
+      );
     }
-  };
+  }
+
+  if (
+    emoji.name === "redditgold" &&
+    message.author === client.user &&
+    !message.content.includes(Messaging.THANKS_FOR_GOLD)
+  ) {
+    message.edit(`${message.content}\n${Messaging.THANKS_FOR_GOLD}`);
+  }
 };
+
+export default messageReactionAddGenerator;
