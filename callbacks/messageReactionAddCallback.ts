@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import * as Messaging from "../messaging";
 
 const timezone = "America/New_York";
-const dateFormat = "dddd, M/D/YYYY, hh:mm A";
+const dateFormat = "dddd, MMMM Do, YYYY, hh:mm A";
 
 const messageReactionAddGenerator = (client: Client) => async (
   reaction: MessageReaction,
