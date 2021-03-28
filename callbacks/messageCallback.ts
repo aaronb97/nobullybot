@@ -7,7 +7,10 @@ function getRandomInt(max: number) {
 const messageCallbackGenerator = (client: Client) => (
   message: Message,
 ): void => {
-  if (message.mentions.has(client.user)) {
+  if (
+    message.mentions.has(client.user) &&
+    !message.content.includes("everyone")
+  ) {
     const messages = [
       "Bullybot is coolybot",
       "You cannot bully the no bully bot",
