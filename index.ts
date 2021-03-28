@@ -1,10 +1,11 @@
-//import { Message, MessageReaction } from "discord.js";
+import { Client } from "discord.js";
+
 require("dotenv").config();
 
 const Discord = require("discord.js");
 const client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION"],
-});
+}) as Client;
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -81,7 +82,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
     } else {
       reaction.message.delete();
       reaction.message.channel.send(
-        `${reaction.message.author} No bullying!!! Your message has been deleted.`
+        `${reaction.message.author.toString()} No bullying!!! Your message has been deleted.`
       );
     }
   }
