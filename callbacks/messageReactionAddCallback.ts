@@ -4,7 +4,7 @@ import * as Messaging from "../messaging";
 import dateFormat from "dateformat";
 
 export const messageReactionAddGenerator = (client: Client) => {
-  return async (reaction: MessageReaction) => {
+  return async (reaction: MessageReaction): Promise<void> => {
     // When we receive a reaction we check if the reaction is partial or not
     if (reaction.partial) {
       // If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle

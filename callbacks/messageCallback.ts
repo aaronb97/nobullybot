@@ -5,7 +5,7 @@ function getRandomInt(max) {
 }
 
 export const messageCallbackGenerator = (client: Client) => {
-  return (message: Message) => {
+  return (message: Message): void => {
     if (message.mentions.has(client.user)) {
       const messages = [
         "Bullybot is coolybot",

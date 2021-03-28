@@ -1,10 +1,11 @@
-import { Client, Message } from "discord.js";
+import { Client } from "discord.js";
 import { messageCallbackGenerator } from "./callbacks/messageCallback";
 import { messageReactionAddGenerator } from "./callbacks/messageReactionAddCallback";
 
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const Discord = require("discord.js");
+import Discord from "discord.js";
 const client = new Discord.Client({
   partials: ["MESSAGE", "CHANNEL", "REACTION"],
 }) as Client;
