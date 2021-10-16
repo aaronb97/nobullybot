@@ -23,7 +23,13 @@ const messageReactionAddGenerator =
 
     const { count, emoji, message } = reaction;
 
-    const emojiNames = ["helpful", "wholesome", "wholesomepro"];
+    const emojiNames = [
+      "helpful",
+      "helpfulgold",
+      "wholesome",
+      "wholesomepro",
+      "based",
+    ];
     if (count >= 3 && emojiNames.includes(emoji.name)) {
       const name = emojiNames.find((x) => x === emoji.name);
       const reactionEmoji = message.guild.emojis.cache.find(
