@@ -25,6 +25,20 @@ const messageCallbackGenerator =
     if (message.content.includes("/rate")) {
       message.channel.send("Wrong bot");
     }
+
+    const spaceSplit = message.content.split(" ");
+    for (let i = 0; i < spaceSplit.length - 2; i += 1) {
+      if (
+        spaceSplit[i].toLocaleLowerCase() === "react" &&
+        spaceSplit[i + 1].toLocaleLowerCase() === "with"
+      ) {
+        try {
+          message.react(spaceSplit[i + 2]);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
   };
 
 export default messageCallbackGenerator;
