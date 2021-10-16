@@ -1,4 +1,5 @@
 import { Client, Message } from "discord.js";
+import emojiRegex from "emoji-regex";
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -32,12 +33,20 @@ const messageCallbackGenerator =
         spaceSplit[i].toLocaleLowerCase() === "react" &&
         spaceSplit[i + 1].toLocaleLowerCase() === "with"
       ) {
-        try {
-          message.react(spaceSplit[i + 2]);
-        } catch (e) {
-          console.log(e);
-        }
+        const matches = spaceSplit[i + 2].match(emojiRegex());
+        matches.forEach((match) => message.react(match));
       }
+    }
+
+    const newlineSplit = message.content.split("\n");
+    if (newlineSplit.length > 1) {
+      newlineSplit.forEach((line) => {
+        const lineSpaceSplit = line.split(" ");
+        const emojiMatch = lineSpaceSplit[0].match(emojiRegex());
+        if (emojiMatch?.length === 1) {
+          message.react(emojiMatch[0]);
+        }
+      });
     }
   };
 
