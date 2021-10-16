@@ -1,10 +1,6 @@
 import { Client, MessageReaction } from "discord.js";
-import moment from "moment-timezone";
 
 import * as Messaging from "../messaging";
-
-const timezone = "America/New_York";
-const dateFormat = "dddd, MMMM Do, YYYY, hh:mm A";
 
 const messageReactionAddGenerator =
   (client: Client) =>
@@ -46,14 +42,7 @@ const messageReactionAddGenerator =
       ) {
         message.edit(`${message.content}\n${Messaging.CANNOT_BULLY_THE_BOT}`);
       } else {
-        message.delete();
-        message.channel.send(
-          `${message.author.toString()} No bullying!!! Your message from ${moment(
-            message.createdAt,
-          )
-            .tz(timezone)
-            .format(dateFormat)} has been deleted.`,
-        );
+        message.channel.send(`${message.author.toString()} No bullying!!!`);
       }
     }
 
