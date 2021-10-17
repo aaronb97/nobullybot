@@ -36,6 +36,17 @@ const messageCallbackGenerator =
       ) {
         const matches = spaceSplit[i + 2].match(emojiRegex());
         matches?.forEach((match) => message.react(match));
+
+        const customEmojis = /:(.*?):/g.exec(spaceSplit[i + 2]);
+        customEmojis?.forEach((name) => {
+          const reactionEmoji = message.guild?.emojis.cache.find(
+            (emoji) => emoji.name === name,
+          );
+
+          if (reactionEmoji) {
+            message.react(reactionEmoji);
+          }
+        });
       }
     }
 
@@ -47,6 +58,17 @@ const messageCallbackGenerator =
         if (emojiMatch?.length === 1) {
           message.react(emojiMatch[0]);
         }
+
+        const customEmojis = /:(.*?):/g.exec(lineSpaceSplit[0]);
+        customEmojis?.forEach((name) => {
+          const reactionEmoji = message.guild?.emojis.cache.find(
+            (emoji) => emoji.name === name,
+          );
+
+          if (reactionEmoji) {
+            message.react(reactionEmoji);
+          }
+        });
       });
     }
   };
