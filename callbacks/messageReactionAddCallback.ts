@@ -31,16 +31,20 @@ const messageReactionAddGenerator =
       "based",
     ];
 
-    if (count >= 3 && emojiNames.includes(emoji.name)) {
+    if (count && count >= 3 && emojiNames.includes(emoji.name)) {
       const name = emojiNames.find((x) => x === emoji.name);
-      const reactionEmoji = message.guild.emojis.cache.find(
+      const reactionEmoji = message.guild?.emojis.cache.find(
         (_emoji) => _emoji.name === name,
       );
-      message.react(reactionEmoji);
+
+      if (reactionEmoji) {
+        message.react(reactionEmoji);
+      }
     }
 
     if (
       emoji.name === "nobully" &&
+      count &&
       count >= parseInt(process.env.EMOJI_COUNT ?? "5")
     ) {
       if (

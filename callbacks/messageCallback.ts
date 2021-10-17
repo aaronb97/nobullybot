@@ -9,6 +9,7 @@ const messageCallbackGenerator =
   (client: Client) =>
   (message: Message): void => {
     if (
+      client.user &&
       message.mentions.has(client.user) &&
       !message.content.includes("everyone")
     ) {
@@ -34,7 +35,7 @@ const messageCallbackGenerator =
         spaceSplit[i + 1].toLocaleLowerCase() === "with"
       ) {
         const matches = spaceSplit[i + 2].match(emojiRegex());
-        matches.forEach((match) => message.react(match));
+        matches?.forEach((match) => message.react(match));
       }
     }
 
