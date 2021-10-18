@@ -7,7 +7,7 @@ function getRandomInt(max: number) {
 
 function areStringsInAphabeticalOrder(words: string[]) {
   for (let i = 0; i < words.length - 1; i += 1) {
-    if (words[i].toLocaleString() >= words[i + 1].toLocaleLowerCase()) {
+    if (words[i].toLocaleLowerCase() >= words[i + 1].toLocaleLowerCase()) {
       return false;
     }
   }
@@ -75,11 +75,13 @@ const messageCallbackGenerator =
           message.react(emojiMatch[0]);
         }
 
-        const customEmojis = /:(.*?):/g.exec(lineSpaceSplit[0]);
+        const customEmojis = /<(.*?)>/g.exec(lineSpaceSplit[0]);
+        console.log(lineSpaceSplit[0]);
         customEmojis?.forEach((name) => {
-          const reactionEmoji = message.guild?.emojis.cache.find(
-            (emoji) => emoji.name === name,
-          );
+          const reactionEmoji = message.guild?.emojis.cache.find((emoji) => {
+            console.log(name);
+            return `:${emoji.identifier}:${emoji.id}` === name;
+          });
 
           if (reactionEmoji) {
             message.react(reactionEmoji);
