@@ -5,6 +5,16 @@ function getRandomInt(max: number) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+function areStringsInAphabeticalOrder(words: string[]) {
+  for (let i = 0; i < words.length - 1; i += 1) {
+    if (words[i].toLocaleString() >= words[i + 1].toLocaleLowerCase()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 const messageCallbackGenerator =
   (client: Client) =>
   (message: Message): void => {
@@ -48,6 +58,12 @@ const messageCallbackGenerator =
           }
         });
       }
+    }
+
+    if (spaceSplit.length > 3 && areStringsInAphabeticalOrder(spaceSplit)) {
+      message.channel.send(
+        "The words in your message are in alphabetical order!",
+      );
     }
 
     const newlineSplit = message.content.split("\n");
