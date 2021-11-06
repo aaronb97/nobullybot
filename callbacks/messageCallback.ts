@@ -7,6 +7,10 @@ function getRandomInt(max: number) {
 
 function areStringsInAphabeticalOrder(words: string[]) {
   for (let i = 0; i < words.length - 1; i += 1) {
+    if (!/^[a-zA-Z]/.test(words[i])) {
+      return false;
+    }
+
     if (words[i].toLocaleLowerCase() >= words[i + 1].toLocaleLowerCase()) {
       return false;
     }
