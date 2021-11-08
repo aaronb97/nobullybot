@@ -65,9 +65,7 @@ const messageCallbackGenerator =
     }
 
     if (spaceSplit.length > 3 && areStringsInAphabeticalOrder(spaceSplit)) {
-      message.channel.send(
-        "The words in your message are in alphabetical order!",
-      );
+      message.react("🔠");
     }
 
     const newlineSplit = message.content.split("\n");
